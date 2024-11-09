@@ -48,21 +48,37 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK && data != null) {
             val sourceUri = data.data ?: return
 
-            // Define destination URI for the cropped image
-            val destinationUri = Uri.fromFile(File(cacheDir, "cropped_image.jpg"))
+            //            // Define destination URI for the cropped image for storing imag
+            //            this was  dor savong the image
+//            val destinationUri = Uri.fromFile(File(cacheDir, "cropped_image.jpg"))
 
-            // uCrop options to set a circular crop outline
+//            this was for getting new new image
+            val destinationUri = Uri.fromFile(File(cacheDir, "cropped_image_${System.currentTimeMillis()}.jpg"))
+
+
+                        // uCrop options for square cropping this was for squqre image
             val options = UCrop.Options().apply {
-                setCircleDimmedLayer(true)    // Circular outline
-                setShowCropGrid(false)        // Hide the grid
-                setShowCropFrame(false)       // Hide the crop frame
+                setShowCropGrid(false)        // Optional: Hides the crop grid
+                setShowCropFrame(true)        // Optional: Shows a square frame around the crop area
             }
 
-            // Start uCrop with defined source and destination URIs
             UCrop.of(sourceUri, destinationUri)
-                .withAspectRatio(1f, 1f)     // Square aspect ratio for circular crop
+                .withAspectRatio(1f, 1f)        // Square aspect ratio (width = height)
                 .withOptions(options)
                 .start(this)
+//
+//            // uCrop options to set a circular crop outline this was circular image
+//            val options = UCrop.Options().apply {
+//                setCircleDimmedLayer(true)    // Circular outline
+//                setShowCropGrid(false)        // Hide the grid
+//                setShowCropFrame(false)       // Hide the crop frame
+//            }
+//
+//            // Start uCrop with defined source and destination URIs
+//            UCrop.of(sourceUri, destinationUri)
+//                .withAspectRatio(1f, 1f)     // Square aspect ratio for circular crop
+//                .withOptions(options)
+//                .start(this)
 
         } else if (requestCode == UCrop.REQUEST_CROP && resultCode == Activity.RESULT_OK) {
             val resultUri = UCrop.getOutput(data!!) ?: return
